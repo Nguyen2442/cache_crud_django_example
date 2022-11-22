@@ -15,7 +15,10 @@ CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
 
 def home(request):
-    return HttpResponse("Hello World")
+    return Response(
+                {"message": "OK!!!!!!!", "success": False},
+                status=status.HTTP_200_OK,
+            )
 
 
 def total(request):
@@ -102,10 +105,10 @@ def view_cached_products(request):
     if "product" in cache:
         # get results from cache
         products = cache.get("product")
-        return Response(products, status=status.HTTP_201_CREATED)
-    else:
-        products = Product.objects.all()
-        results = [product.to_json() for product in products]
-        # store data in cache
-        cache.set("product", results, timeout=CACHE_TTL)
-        return Response(results, status=status.HTTP_201_CREATED)
+        return Response(products, status=status.HTTP_200_OK)
+    
+    products = Product.objects.all()
+    results = [product.to_json() for product in products]
+    # store data in cache
+    cache.set("product", results, timeout=CACHE_TTL)
+    return Response(results, status=status.HTTP_200_OK)

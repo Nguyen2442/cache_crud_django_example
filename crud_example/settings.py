@@ -16,11 +16,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PGHOST = os.getenv("PGHOST")
-PGPORT = os.getenv("PGPORT")
-PGDATABASE = os.getenv("PGDATABASE")
-PGUSER = os.getenv("PGUSER")
-PGPASSWORD = os.getenv("PGPASSWORD")
+PGHOST = os.getenv("POSTGRES_HOST")
+PGPORT = os.getenv("POSTGRES_PORT")
+PGDATABASE = os.getenv("POSTGRES_DB")
+PGUSER = os.getenv("POSTGRES_USER")
+PGPASSWORD = os.getenv("POSTGRES_PASSWORD")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results',
+    # 'django_celery_results',
     'store',
     'rest_framework',
 ]
@@ -95,17 +95,37 @@ DATABASES = {
         "USER": PGUSER,
         "PASSWORD": PGPASSWORD,
         "HOST": PGHOST,
-        "PORT": PGPORT,
-    }
+        "PORT": '5432',
+    },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'mariadb',
+    #     'USER': 'mariadb',
+    #     'PASSWORD': 'mariadb',
+    #     'HOST': 'db',
+    #     'PORT': 3308,
+    #     'OPTIONS': {
+    #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1",
+    #     },
+    # },
+    # 'mysql_db': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'mysql',
+    #     'USER': 'mysql',
+    #     'PASSWORD': 'mysql',
+    #     'HOST': 'db',
+    #     'PORT': 3306
+    # }
 }
 
 # Cache time to live is 15 minutes.
 CACHE_TTL = 60 * 15
 
+# caches
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://redis:6379",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },
@@ -113,9 +133,10 @@ CACHES = {
     }
 }
 
-# Redis and Celery Conf
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+# # Redis and Celery Conf
+# CELERY_BROKER_URL = "redis://redis:6379"
+# CELERY_RESULT_BACKEND = "redis://redis:6379"
 
 
 # Password validation
@@ -158,3 +179,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+KAFKA_URL = "broker:29092"
+KAFKA_STREAM_TOPIC = "sample_store_details"

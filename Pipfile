@@ -13,6 +13,7 @@ celery = "*"
 django-celery-results = "*"
 redis-cache = "*"
 redis = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
