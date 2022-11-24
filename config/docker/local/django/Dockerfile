@@ -22,6 +22,10 @@ RUN apt-get install redis-server -y
 COPY ./requirements/requirements.txt /requirements.txt
 RUN python3 -m venv src-env && \
     . ./src-env/bin/activate && \
+    # apt-get install default-libmysqlclient-dev -y && \
+    # apt-get install default-mysql-client -y && \
+    # apt-get install python-dev -y && \
+    pip install --upgrade pip &&\
     pip install -r /requirements.txt && \
     pip install --upgrade websockets
 

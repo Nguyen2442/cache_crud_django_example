@@ -29,6 +29,20 @@ services:
     tty: true
     stdin_open: true
 
+  # mysql:
+  #   image: mysql:8.0.21
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     - MYSQL_DATABASE='mysql'
+  #     - MYSQL_USER='root'
+  #     - MYSQL_PASSWORD='mysql'
+  #     - MYSQL_ROOT_PASSWORD='mysql'
+  #     - MYSQL_HOST=''
+  #   volumes:
+  #     - /tmp/app/mysqld:/var/run/mysqld
+  #     - ./db:/var/lib/mysql
+
   # celery_worker:
   #   build:
   #     context: .

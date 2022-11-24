@@ -97,7 +97,7 @@ DATABASES = {
         "HOST": PGHOST,
         "PORT": '5432',
     },
-    # 'default': {
+    # 'maria_db': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'mariadb',
     #     'USER': 'mariadb',
@@ -111,7 +111,7 @@ DATABASES = {
     # 'mysql_db': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'mysql',
-    #     'USER': 'mysql',
+    #     'USER': 'root',
     #     'PASSWORD': 'mysql',
     #     'HOST': 'db',
     #     'PORT': 3306

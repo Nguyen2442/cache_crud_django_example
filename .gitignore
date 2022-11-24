@@ -6,9 +6,10 @@ __pycache__
 db.sqlite3
 media
 runserver.sh
-
+db
 # Backup files # 
 *.bak 
+store-data/*
 
 # If you are using PyCharm # 
 # User-specific stuff

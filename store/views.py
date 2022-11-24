@@ -10,6 +10,10 @@ from django.conf import settings
 from rest_framework.response import Response
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from .services import KafkaPublisher, MessagePublisher
+
+message_publisher = MessagePublisher(client=KafkaPublisher())
+
 
 CACHE_TTL = getattr(settings, "CACHE_TTL", DEFAULT_TIMEOUT)
 
@@ -33,6 +37,7 @@ cache.set("foo", "bar")
 
 class ProductView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
+    message_topic = settings.KAFKA_STREAM_TOPIC
 
     def get_queryset(self):
         return Product.objects.all()
@@ -45,8 +50,8 @@ class ProductView(generics.ListCreateAPIView):
                 {"message": "Created Product unsuccessfully!", "success": False},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-        product_serializer.save()
+        message_publisher.publish(topic=self.message_topic, data=product_serializer.data)
+        #product_serializer.save()
 
         return Response(
             data={"message": "Created Product successfully!", "success": True},
