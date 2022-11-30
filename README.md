@@ -6,15 +6,15 @@
 ### API 
 An API to create a product in store 
 
-Endpoint: http://127.0.0.1:8000/products/
-Method: POST
-Content-Type: application/json
+-   Endpoint: http://127.0.0.1:8000/products/
+-   Method: POST
+-   Content-Type: application/json
 
-{
-	"name": "Laptop MSI modern 15",
-	"description": "Laptop for gaming",
-	"price": "10000"
-}
+    {
+        "name": "Laptop MSI modern 15",
+        "description": "Laptop for gaming",
+        "price": "10000"
+    }
 
 ```
 curl --location --request POST 'http://127.0.0.1:8000/products/' \

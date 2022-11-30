@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from .services import KafkaPublisher, MessagePublisher
+from kafka import KafkaConsumer
+import json
 
 message_publisher = MessagePublisher(client=KafkaPublisher())
 
@@ -40,6 +42,12 @@ class ProductView(generics.ListCreateAPIView):
     message_topic = settings.KAFKA_STREAM_TOPIC
 
     def get_queryset(self):
+        consumer = KafkaConsumer(group_id ='group1', bootstrap_servers=settings.KAFKA_URL, value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+        consumer.subscribe([self.message_topic])
+        print(consumer)
+        for msg in consumer:
+            print("Topic Name=%s, Message=%s"%(msg.topic, msg.value))
+            break
         return Product.objects.all()
 
     def create(self, request, *args, **kwargs):
@@ -51,8 +59,8 @@ class ProductView(generics.ListCreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         message_publisher.publish(topic=self.message_topic, data=product_serializer.data)
-        #product_serializer.save()
-
+        # product_serializer.save()
+        
         return Response(
             data={"message": "Created Product successfully!", "success": True},
             status=status.HTTP_201_CREATED,
@@ -106,7 +114,7 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 @api_view(["GET"])
-def view_cached_products(request):
+def view_cached_products(request):    
     if "product" in cache:
         # get results from cache
         products = cache.get("product")
